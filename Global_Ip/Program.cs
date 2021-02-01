@@ -77,7 +77,7 @@ namespace Global_Ip
             ProgressBarCiz(7, 15, 100, 2, ConsoleColor.Green);
             Console.WriteLine("\n\n\n\n");
             center("Pressione qualquer tecla para continuar!!!");
-            Console.Read();
+            Console.ReadKey();
         }
 
     static async System.Threading.Tasks.Task Main(string[] args)
@@ -146,13 +146,14 @@ ______                               _       _           _
 
                         table.Write(Format.Alternative);
 
-                        Console.Read();
+                        Console.ReadKey();
                     }
                 }
             }
             catch
             {
                 center("Verifique sua conexão com a internet e tente novamente!!!");
+                Console.ReadKey();
             }
         }
     }
