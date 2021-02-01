@@ -5,18 +5,30 @@ using System.Net.Http;
 using ConsoleTables;
 using Newtonsoft.Json.Linq;
 
+/*
+ * Tenho preguiça de organizar o código e comentar direito as linhas e os pacotes que adicionei, pacotes: ConsoleTables, Newtonsoft.Json
+ */
+
 namespace Global_Ip
 {
     class Program
     {
 
-        static void center(string message)
+        static void center(string message, bool slow = false,  int time = 0)
         {
             int screenWidth = Console.WindowWidth;
             int stringWidth = message.Length;
             int spaces = (screenWidth / 2) + (stringWidth / 2);
 
-            Console.WriteLine(message.PadLeft(spaces));
+            if(slow == false)
+            {
+                Console.WriteLine(message.PadLeft(spaces));
+            }
+            else
+            {
+                TypeLine(message.PadLeft(spaces), time);
+                Console.WriteLine();
+            }
         }
 
         public static void ProgressBarCiz(int sol, int ust, int deger, int isaret, ConsoleColor color)
@@ -69,18 +81,28 @@ namespace Global_Ip
                     if (line != null)
                     {
                         Console.SetCursorPosition((Console.WindowWidth - line.Length) / 2, Console.CursorTop);
-                        Console.WriteLine(line);
+                        TypeLine(line, 10);
+                        Console.WriteLine();
                     }
                 } while (line != null);
             }
 
             ProgressBarCiz(7, 15, 100, 2, ConsoleColor.Green);
             Console.WriteLine("\n\n\n\n");
-            center("Pressione qualquer tecla para continuar!!!");
+            center("Pressione qualquer tecla para continuar!!!", true, 60);
             Console.ReadKey();
         }
 
-    static async System.Threading.Tasks.Task Main(string[] args)
+        public static void TypeLine(string line, int time)
+        {
+            for (int i = 0; i < line.Length; i++)
+            {
+                Console.Write(line[i]);
+                System.Threading.Thread.Sleep(time); // Sleep for 150 milliseconds
+            }
+        }
+
+        static async System.Threading.Tasks.Task Main(string[] args)
         {
 
             string info = @"
@@ -126,7 +148,8 @@ ______                               _       _           _
                                 if (line != null)
                                 {
                                     Console.SetCursorPosition((Console.WindowWidth - line.Length) / 2, Console.CursorTop);
-                                    Console.WriteLine(line);
+                                    TypeLine(line, 10);
+                                    Console.WriteLine();
                                 }
                             } while (line != null);
                         }
@@ -134,7 +157,7 @@ ______                               _       _           _
                         //Console.WriteLine(info);
                         Console.WriteLine();
 
-                        center($"Seu endereço IP na internet: {ip}\n");
+                        center($"Seu endereço IP na internet: {ip}\n", true, 60);
 
                         var table = new ConsoleTable("Names", "values");
 
@@ -144,7 +167,21 @@ ______                               _       _           _
                             table.AddRow(pair.Key, pair.Value);
                         }
 
-                        table.Write(Format.Alternative);
+                        //table.Write(Format.Alternative);
+
+                        using (StringReader reader = new StringReader(table.ToString().Remove(table.ToString().TrimEnd().LastIndexOf(Environment.NewLine))))
+                        {
+                            string line = string.Empty;
+                            do
+                            {
+                                line = reader.ReadLine();
+                                if (line != null)
+                                {
+                                    Console.SetCursorPosition((Console.WindowWidth - line.Length) / 2, Console.CursorTop);
+                                    Console.WriteLine(line);
+                                }
+                            } while (line != null);
+                        }
 
                         Console.ReadKey();
                     }
