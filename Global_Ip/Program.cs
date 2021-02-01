@@ -14,7 +14,7 @@ namespace Global_Ip
     class Program
     {
 
-        static void center(string message, bool slow = false,  int time = 0)
+        static void Center(string message, bool slow = false,  int time = 0)
         {
             int screenWidth = Console.WindowWidth;
             int stringWidth = message.Length;
@@ -58,7 +58,7 @@ namespace Global_Ip
             Console.ResetColor();
         }
 
-        public static void loadingBar()
+        public static void LoadingBar()
         {
 
             string pentagon = @"
@@ -89,7 +89,7 @@ namespace Global_Ip
 
             ProgressBarCiz(7, 15, 100, 2, ConsoleColor.Green);
             Console.WriteLine("\n\n\n\n");
-            center("Pressione qualquer tecla para continuar!!!", true, 60);
+            Center("Pressione qualquer tecla para continuar!!!", true, 60);
             Console.ReadKey();
         }
 
@@ -102,7 +102,7 @@ namespace Global_Ip
             }
         }
 
-        static async System.Threading.Tasks.Task Main(string[] args)
+        static async System.Threading.Tasks.Task Main()
         {
 
             string info = @"
@@ -131,7 +131,7 @@ ______                               _       _           _
                     using (client.OpenRead("http://www.google.com/"))
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        loadingBar();
+                        LoadingBar();
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Green;
                         var httpClient = new HttpClient();
@@ -157,7 +157,7 @@ ______                               _       _           _
                         //Console.WriteLine(info);
                         Console.WriteLine();
 
-                        center($"Seu endereço IP na internet: {ip}\n", true, 60);
+                        Center($"Seu endereço IP na internet: {ip}\n", true, 60);
 
                         var table = new ConsoleTable("Names", "values");
 
@@ -189,7 +189,7 @@ ______                               _       _           _
             }
             catch
             {
-                center("Verifique sua conexão com a internet e tente novamente!!!");
+                Center("Verifique sua conexão com a internet e tente novamente!!!");
                 Console.ReadKey();
             }
         }
