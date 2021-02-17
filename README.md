@@ -7,5 +7,9 @@
 ## Requisitos
 > Visual Studio 2019 <br />
 > Precisas instalar os seguintes pacotes no seu projeto: <br />
--> ```console dotnet add package ConsoleTables --version 2.4.2``` <br />
--> ```console dotnet add package Newtonsoft.Json --version 13.0.1-beta1```
+
+```console 
+dotnet add package ConsoleTables --version 2.4.2
+
+dotnet add package Newtonsoft.Json --version 13.0.1-beta1
+```
