@@ -5,15 +5,12 @@ using System.Net.Http;
 using ConsoleTables;
 using Newtonsoft.Json.Linq;
 
-/*
- * Tenho preguiça de organizar o código e comentar direito as linhas e os pacotes que adicionei, pacotes: ConsoleTables, Newtonsoft.Json
- */
-
 namespace Global_Ip
 {
     class Program
     {
 
+        // Função responsável por centralizar o texto no terminal
         static void Center(string message, bool slow = false,  int time = 0)
         {
             int screenWidth = Console.WindowWidth;
@@ -31,6 +28,7 @@ namespace Global_Ip
             }
         }
 
+        // Função responsável por simular barra de carregamento no terminal
         public static void ProgressBarCiz(int sol, int ust, int deger, int isaret, ConsoleColor color)
         {
             char[] symbol = new char[5] { '\u25A0', '\u2592', '\u2588', '\u2551', '\u2502' };
@@ -58,10 +56,21 @@ namespace Global_Ip
             Console.ResetColor();
         }
 
-        public static void LoadingBar()
+        // Função responsável por fazer o efeito de escrita letra por letra
+        public static void TypeLine(string line, int time)
+        {
+            for (int i = 0; i < line.Length; i++)
+            {
+                Console.Write(line[i]);
+                System.Threading.Thread.Sleep(time);
+            }
+        }
+
+        // Função com o código necessário para a tela de carregamento
+        public static void LoadingScreen()
         {
 
-            string pentagon = @"
+            string loading = @"
  _____   ___  ____________ _____ _____   ___   _   _______ _____      
 /  __ \ / _ \ | ___ \ ___ \  ___|  __ \ / _ \ | \ | |  _  \  _  |     
 | /  \// /_\ \| |_/ / |_/ / |__ | |  \// /_\ \|  \| | | | | | | |     
@@ -71,7 +80,7 @@ namespace Global_Ip
                                                                       
                                                                       
 ";
-            using (StringReader reader = new StringReader(pentagon))
+            using (StringReader reader = new StringReader(loading))
             {
                 Console.WriteLine("\n\n\n\n");
                 string line = string.Empty;
@@ -81,7 +90,7 @@ namespace Global_Ip
                     if (line != null)
                     {
                         Console.SetCursorPosition((Console.WindowWidth - line.Length) / 2, Console.CursorTop);
-                        TypeLine(line, 10);
+                        TypeLine(line, 3);
                         Console.WriteLine();
                     }
                 } while (line != null);
@@ -91,18 +100,11 @@ namespace Global_Ip
             Console.WriteLine("\n\n\n\n");
             Center("Pressione qualquer tecla para continuar!!!", true, 60);
             Console.ReadKey();
+            Console.Clear();
         }
 
-        public static void TypeLine(string line, int time)
-        {
-            for (int i = 0; i < line.Length; i++)
-            {
-                Console.Write(line[i]);
-                System.Threading.Thread.Sleep(time); // Sleep for 150 milliseconds
-            }
-        }
-
-        static async System.Threading.Tasks.Task Main()
+        // Função com o código necessário para a tela do criador
+        public static void AuthorLoadingScreen()
         {
 
             string info = @"
@@ -123,41 +125,90 @@ ______                               _       _           _
                                                                       | |                                  
                                                                       |_|                                  
 ";
+            using (StringReader reader = new StringReader(info))
+            {
+                Console.WriteLine("\n\n\n\n");
+                string line = string.Empty;
+                do
+                {
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        Console.SetCursorPosition((Console.WindowWidth - line.Length) / 2, Console.CursorTop);
+                        TypeLine(line, 3);
+                        Console.WriteLine();
+                    }
+                } while (line != null);
+            }
 
+            Console.WriteLine("\n\n\n\n");
+            Center("Pressione qualquer tecla para continuar!!!", true, 60);
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        // Função com o código necessário para a tela do criador
+        public static void LogoLoadingScreen()
+        {
+
+            string info = @"
+   _____ _      ____  ____          _              _____ _____  
+  / ____| |    / __ \|  _ \   /\   | |            |_   _|  __ \ 
+ | |  __| |   | |  | | |_) | /  \  | |              | | | |__) |
+ | | |_ | |   | |  | |  _ < / /\ \ | |              | | |  ___/ 
+ | |__| | |___| |__| | |_) / ____ \| |____         _| |_| |     
+  \_____|______\____/|____/_/    \_\______|       |_____|_|     
+                                                                
+";
+            using (StringReader reader = new StringReader(info))
+            {
+                Console.WriteLine("\n\n\n\n");
+                string line = string.Empty;
+                do
+                {
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        Console.SetCursorPosition((Console.WindowWidth - line.Length) / 2, Console.CursorTop);
+                        TypeLine(line, 3);
+                        Console.WriteLine();
+                    }
+                } while (line != null);
+            }
+
+            Console.WriteLine("\n\n\n\n");
+            Center("Pressione qualquer tecla para continuar!!!", true, 60);
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+
+        static async System.Threading.Tasks.Task Main()
+        {
             try
             {
-                using (WebClient client = new WebClient())
+                using (HttpClient client = new HttpClient())
                 {
-                    using (client.OpenRead("http://www.google.com/"))
+                    using (client.GetAsync("http://www.google.com/"))
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        LoadingBar();
-                        Console.Clear();
+                        LoadingScreen();
                         Console.ForegroundColor = ConsoleColor.Green;
+                        
+                        // Pegar o IP e dados realacionados a ele
                         var httpClient = new HttpClient();
                         var ip = await httpClient.GetStringAsync("https://api.ipify.org");
                         var geoString = String.Format("http://ip-api.com/json/{0}?fields=26341375", ip);
                         JObject parsed = JObject.Parse(await httpClient.GetStringAsync(geoString));
 
-                        using (StringReader reader = new StringReader(info))
-                        {
-                            string line = string.Empty;
-                            do
-                            {
-                                line = reader.ReadLine();
-                                if (line != null)
-                                {
-                                    Console.SetCursorPosition((Console.WindowWidth - line.Length) / 2, Console.CursorTop);
-                                    TypeLine(line, 10);
-                                    Console.WriteLine();
-                                }
-                            } while (line != null);
-                        }
-
+                        AuthorLoadingScreen();
+                        LogoLoadingScreen();
                         //Console.WriteLine(info);
                         Console.WriteLine();
 
                         Center($"Seu endereço IP na internet: {ip}\n", true, 60);
+
+                        System.Threading.Thread.Sleep(150);
 
                         var table = new ConsoleTable("Names", "values");
 
@@ -189,6 +240,7 @@ ______                               _       _           _
             }
             catch
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Center("Verifique sua conexão com a internet e tente novamente!!!");
                 Console.ReadKey();
             }
